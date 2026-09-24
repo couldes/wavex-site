@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171914">
+  <meta name="description" content="单场战斗玩法原型：在三条战线中预判并对抗炉心统领。">
+  <title>炉心决斗 · Card Case 原型</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="duel.css">
+  <script src="duel.js" defer></script>
+</head>
+<body>
+  <header class="duel-header">
+    <a class="brand" href="index.html"><span class="brand-mark">CC</span><span>卡牌边境 <small>CARD CASE</small></span></a>
+    <a class="back-link" href="index.html">返回原型主页</a>
+  </header>
+  <main class="duel-main">
+    <section class="duel-intro">
+      <div><p class="eyebrow">COMBAT LAB · PROTOTYPE 01</p><h1>炉心决斗</h1><p>看预警，换线躲避，分配行动点，击败炉心统领。</p></div>
+      <button class="restart-button" id="restart" type="button">重新挑战</button>
+    </section>
+
+    <section class="arena" aria-label="战斗场地">
+      <div class="arena-heading"><span><i class="live-dot"></i>熔炉内环</span><span id="round-label">第 1 回合</span></div>
+      <div class="arena-body">
+        <section class="fighter player-fighter" aria-label="玩家状态">
+          <div class="fighter-title"><span>远征者</span><strong id="player-hp">32 / 32</strong></div>
+          <div class="health-track"><i id="player-health"></i></div>
+          <p id="player-state">状态：稳定 · 行动点 3</p>
+          <div class="resource-row"><span>行动点</span><strong id="ap-value">3</strong><span class="ap-pips" id="ap-pips" aria-hidden="true"></span></div>
+          <p class="opening-state" id="opening-state">尚无反击窗口</p>
+        </section>
+
+        <div class="boss-presentation">
+          <div class="boss-halo"></div>
+          <svg class="boss-art" viewBox="0 0 260 210" role="img" aria-label="原创熔炉构装体插画">
+            <defs><linearGradient id="iron" x2=".8" y2="1"><stop stop-color="#d4c59e"/><stop offset=".45" stop-color="#6d7268"/><stop offset="1" stop-color="#292d28"/></linearGradient><linearGradient id="ember" x2="0" y2="1"><stop stop-color="#f6cb72"/><stop offset="1" stop-color="#9a4028"/></linearGradient><filter id="rough"><feTurbulence baseFrequency=".035" numOctaves="2" seed="8"/><feDisplacementMap in="SourceGraphic" scale="2"/></filter></defs>
+            <path d="M43 179h174l-17 12H61z" fill="#12140f" opacity=".8"/>
+            <g stroke="#171914" stroke-width="8" stroke-linejoin="round" filter="url(#rough)">
+              <path fill="url(#iron)" d="m74 71 21-26 68 2 25 30-9 73-45 28-55-25-18-42z"/>
+              <path fill="#a85735" d="m87 89 24-15 51 4 16 20-18 40-38 13-39-21z"/>
+              <path fill="url(#iron)" d="m93 53-14-30 31 20 16-35 13 34 28-19-13 41z"/>
+              <path fill="url(#ember)" d="m106 91 22-9 13 11-15 13z"/>
+              <path fill="url(#ember)" d="m147 93 21-4-14 17-15 1z"/>
+              <path fill="#42473f" d="m75 116-33 28 3 13 43-21m83-13 38 19-6 13-43-16M99 161l-10 29m59-28 21 27"/>
+              <path fill="#847750" d="m81 64-37-7 28 24m101-20 38-24-22 39"/>
+            </g>
+            <path d="m103 122 17 7m28-4 15-8M96 73l14 5m42-5 13 5" fill="none" stroke="#ead39a" stroke-width="3" opacity=".75"/>
+            <path d="m115 106 14 10m19 4 11-9" fill="none" stroke="#311f18" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+          <div class="boss-nameplate"><span>炉心统领</span><span>铸炉守卫 · 序列 01</span></div>
+        </div>
+
+        <section class="fighter boss-fighter" aria-label="Boss 状态">
+          <div class="fighter-title"><span>炉心统领</span><strong id="boss-hp">80 / 80</strong></div>
+          <div class="health-track boss-health-track"><i id="boss-health"></i></div>
+          <p id="boss-state">甲壳稳定。它正在读取你的站位。</p>
+          <div class="intent-card" id="intent-card" aria-live="polite">
+            <span class="intent-kicker">已读预警 · 当前回合结束时发动</span>
+            <strong id="intent-title">—</strong>
+            <div class="intent-lanes" id="intent-lanes"></div>
+            <span class="intent-detail" id="intent-detail"></span>
+          </div>
+        </section>
+      </div>
+
+      <div class="lane-board" id="lane-board" aria-label="选择你所在的战线">
+        <button class="lane" type="button" data-lane="0" aria-pressed="false"><span class="lane-warning" aria-hidden="true"></span><span class="lane-name">左翼</span><span class="lane-occupant">空位</span><span class="lane-cost">移动 · 1 AP</span></button>
+        <button class="lane selected" type="button" data-lane="1" aria-pressed="true"><span class="lane-warning" aria-hidden="true"></span><span class="lane-name">中线</span><span class="lane-occupant">你在此</span><span class="lane-cost">当前位置</span></button>
+        <button class="lane" type="button" data-lane="2" aria-pressed="false"><span class="lane-warning" aria-hidden="true"></span><span class="lane-name">右翼</span><span class="lane-occupant">空位</span><span class="lane-cost">移动 · 1 AP</span></button>
+      </div>
+      <p class="intent-explainer" id="intent-explainer">红色战线会在回合结束时受到攻击。普通攻击可以换线躲开；躲开后获得反击窗口。</p>
+    </section>
+
+    <section class="command-deck" aria-label="本回合行动">
+      <div class="command-heading"><div><p class="eyebrow">YOUR TURN</p><h2>规划本回合</h2></div><span class="draw-note">固定牌组 · 抽 4 张 · 每回合 3 AP</span></div>
+      <div class="hand" id="hand" aria-label="当前手牌"></div>
+      <div class="turn-footer"><p id="feedback" aria-live="polite">预警已经亮起。你有 3 点行动；可以先出牌，再决定移动到哪条线。</p><button class="end-turn" id="end-turn" type="button">结束回合 <span>↗</span></button></div>
+    </section>
+
+  </main>
+</body>
+</html>
