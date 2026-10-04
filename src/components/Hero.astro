@@ -3,11 +3,13 @@
 // 入场为 CSS 加载动画(data-rise 错峰;手机为 phone-in 升起回正),不依赖 JS
 import PhoneFrame from './PhoneFrame.astro';
 import { SITE } from '../data/site';
+
+const BASE = import.meta.env.BASE_URL.replace(/\/+$/, '');
 ---
 <section class="hero">
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="hero-inner">
-    <img class="hero-icon" src="/icon.svg" alt="波形应用图标" width="88" height="88" data-rise style="--d:0ms" />
+    <img class="hero-icon" src={`${BASE}/icon.svg`} alt="波形应用图标" width="88" height="88" data-rise style="--d:0ms" />
     <h1 class="hero-title" data-rise style="--d:90ms">
       {SITE.name} <span class="latin">{SITE.latin}</span>
     </h1>
@@ -16,12 +18,15 @@ import { SITE } from '../data/site';
       <span class="hero-providers">{SITE.providers}</span>{SITE.subline}
     </p>
     <div class="hero-cta" data-rise style="--d:340ms">
-      <a class="btn btn-primary" href={SITE.links.apk}>↓ 下载最新 APK</a>
+      <a class="btn btn-primary" href={SITE.links.apk}><span aria-hidden="true">↓</span> 下载最新 APK</a>
       <a class="btn btn-ghost" href={SITE.links.repo}>GitHub</a>
+    </div>
+    <div class="hero-meta" data-rise style="--d:420ms">
+      {SITE.version} · {SITE.platform} · {SITE.license} · {SITE.extra}
     </div>
     <div class="hero-shots">
       <PhoneFrame src={SITE.screenshots.drawer} alt="历史对话界面" width={200} eager />
-      <PhoneFrame src={SITE.screenshots.chat} alt="聊天界面" width={250} eager />
+      <PhoneFrame src={SITE.screenshots.chat} alt="聊天界面" width={250} eager priority />
       <PhoneFrame src={SITE.screenshots.usage} alt="用量统计界面" width={200} eager />
     </div>
   </div>
@@ -31,15 +36,18 @@ import { SITE } from '../data/site';
   const shots = document.querySelector('.hero-shots');
   const phones = shots ? [...shots.querySelectorAll('.phone')] : [];
   if (phones.length === 3 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const wide = matchMedia('(min-width: 861px)');
     let ticking = false;
+    // hero 高度与滚动终点缓存:仅在加载/视口变化时读一次布局,滚动帧零布局读取
+    let end = 0;
+    const measure = () => {
+      const heroEl = document.querySelector('.hero');
+      end = Math.max(600, (heroEl?.offsetHeight ?? 1000) - window.innerHeight * 0.5);
+    };
     const update = () => {
       ticking = false;
+      if (!wide.matches) return; // 窄屏两侧机 display:none,跳过无效样式写入
       // 白色页面占据视口一半时恰好收完:终点 = hero 底边 - 半个视口
-      const heroEl = document.querySelector('.hero');
-      const end = Math.max(
-        600,
-        (heroEl?.offsetHeight ?? 1000) - window.innerHeight * 0.5
-      );
       const start = Math.max(120, end - 280); // 滚过约三分之一屏后才开始
       const t = Math.min(1, Math.max(0, (window.scrollY - start) / (end - start)));
       const e = 1 - (1 - t) * (1 - t); // easeOut
@@ -62,6 +70,14 @@ import { SITE } from '../data/site';
       },
       { passive: true }
     );
+    window.addEventListener('resize', () => {
+      measure();
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    });
+    measure();
     update();
   }
 </script>

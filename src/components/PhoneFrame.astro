@@ -2,16 +2,27 @@
 // CSS 手机框:深色边框 + 圆角 + 倾斜角。高度随截图自然比例。
 // 注:计划原定 aspect-ratio 9/19,实测截图 720×1280(9:16),固定比例会
 // object-fit:cover 裁掉两侧 UI,故改为高度随图(已记台账裁决)。
+// width/height 属性声明固有比例,浏览器可提前占位,消除图片加载 CLS。
 // eager: 首屏截图传 true 以避免 lazy 拖慢 LCP;分区截图默认 lazy。
+// priority: 传 true 时附加 fetchpriority=high(仅用于首屏 LCP 主图)。
 interface Props {
   src: string;
   alt: string;
   rotate?: number;
   width?: number;
   eager?: boolean;
+  priority?: boolean;
 }
-const { src, alt, rotate = 0, width = 240, eager = false } = Astro.props;
+const { src, alt, rotate = 0, width = 240, eager = false, priority = false } = Astro.props;
 ---
 <div class="phone" style={`--tilt:${rotate}deg;--pw:${width}px`}>
-  <img src={src} alt={alt} loading={eager ? "eager" : "lazy"} />
+  <img
+    src={src}
+    alt={alt}
+    width="720"
+    height="1280"
+    loading={eager ? "eager" : "lazy"}
+    decoding="async"
+    fetchpriority={priority ? "high" : undefined}
+  />
 </div>

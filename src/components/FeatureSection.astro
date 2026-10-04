@@ -1,6 +1,6 @@
 ---
 // 功能分区:文案与截图左右交错(zigzag)。flip=true 时视觉在左。
-// bullets:精简功能点(渐变对勾,大字号);shots:1-2 张截图。
+// bullets:精简功能点(渐变对勾,大字号);shots:手机框截图。
 import PhoneFrame from './PhoneFrame.astro';
 interface Props {
   id: string;
@@ -9,13 +9,11 @@ interface Props {
   bullets?: readonly string[];
   shots?: readonly { readonly src: string; readonly alt: string }[];
   flip?: boolean;
-  /** wide:文案居中在上、媒体并排铺满在下(适合多图大卡) */
-  wide?: boolean;
 }
-const { id, title, subtitle, bullets = [], shots = [], flip = false, wide = false } = Astro.props;
+const { id, title, subtitle, bullets = [], shots = [], flip = false } = Astro.props;
 const dir = flip ? 44 : -44; // 文字滑入方向:视觉在右则文字从左来
 ---
-<section class={`feature${flip ? ' flip' : ''}${wide ? ' wide' : ''}`} id={id}>
+<section class={`feature${flip ? ' flip' : ''}`} id={id}>
   <div class="section-inner feature-cols">
     <div class="feature-copy">
       <h2 class="section-title reveal" style={`--rx:${dir}px`}>{title}</h2>
@@ -37,17 +35,8 @@ const dir = flip ? 44 : -44; // 文字滑入方向:视觉在右则文字从左�
         )
       }
     </div>
-    <div class={`feature-visual reveal${shots.length > 1 ? ' dual' : ''}`} style={`--rx:${-dir}px;--reveal-delay:110ms`}>
-      {shots.map((s, i) =>
-        // 多图(如用量统计两张宽裁切)用窗口卡样式;单图保持手机框
-        shots.length > 1 ? (
-          <div class="shot-card">
-            <img src={s.src} alt={s.alt} loading="lazy" />
-          </div>
-        ) : (
-          <PhoneFrame src={s.src} alt={s.alt} width={252} />
-        )
-      )}
+    <div class="feature-visual reveal" style={`--rx:${-dir}px;--reveal-delay:110ms`}>
+      {shots.map((s) => <PhoneFrame src={s.src} alt={s.alt} width={252} />)}
     </div>
   </div>
 </section>

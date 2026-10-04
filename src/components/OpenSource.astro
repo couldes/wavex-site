@@ -1,17 +1,19 @@
 ---
 // 深色开源区:玻璃卡承载,顶部渐变饰线,重复下载入口(id="download")
 import { SITE } from '../data/site';
+
+const BASE = import.meta.env.BASE_URL.replace(/\/+$/, '');
 ---
 <section class="opensource" id="download">
   <div class="section-inner">
     <div class="opensource-card reveal">
-      <img class="opensource-icon" src="/icon.svg" alt="" width="72" height="72" />
+      <img class="opensource-icon" src={`${BASE}/icon.svg`} alt="" width="72" height="72" />
       <h2 class="opensource-title">完全开源,免费使用</h2>
       <p class="opensource-sub">
         源码全部公开——没有广告,没有跟踪,欢迎审计。
       </p>
       <div class="opensource-cta">
-        <a class="btn btn-primary" href={SITE.links.apk}>↓ 下载最新 APK</a>
+        <a class="btn btn-primary" href={SITE.links.apk}><span aria-hidden="true">↓</span> 下载最新 APK</a>
         <a class="btn btn-ghost" href={SITE.links.repo}>GitHub 仓库</a>
         <a class="btn btn-ghost" href={SITE.links.issues}>问题反馈</a>
       </div>

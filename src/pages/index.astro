@@ -9,6 +9,9 @@ import SiteFooter from '../components/SiteFooter.astro';
 import { SITE } from '../data/site';
 
 const [providers, chat, stats, privacy] = SITE.sections;
+const BASE = import.meta.env.BASE_URL.replace(/\/+$/, '');
+const ogImage = new URL(`${BASE}/og.png`, Astro.site);
+const ogUrl = new URL(`${BASE}/`, Astro.site);
 ---
 <!doctype html>
 <html lang="zh-CN">
@@ -16,11 +19,15 @@ const [providers, chat, stats, privacy] = SITE.sections;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={SITE.description} />
+    <meta name="theme-color" content="#0b1020" />
     <meta property="og:title" content="波形 wavex — Android 多 AI 服务商客户端" />
     <meta property="og:description" content={SITE.description} />
-    <meta property="og:image" content={new URL('/og.png', Astro.site)} />
     <meta property="og:type" content="website" />
-    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <meta property="og:url" content={ogUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
+    <link rel="icon" href={`${BASE}/icon.svg`} type="image/svg+xml" />
     <noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
     <title>波形 wavex — Android 多 AI 服务商客户端</title>
   </head>

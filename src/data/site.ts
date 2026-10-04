@@ -1,4 +1,7 @@
 // wavex(波形)产品数据唯一来源。更新产品信息只改这里。
+// 资源路径基于 BASE_URL 派生,兼容任意 GitHub 项目页子路径(如 /arcade/)。
+const BASE = import.meta.env.BASE_URL.replace(/\/+$/, '');
+
 export const SITE = {
   name: '波形',
   latin: 'wavex',
@@ -9,7 +12,6 @@ export const SITE = {
   version: 'v0.14.0',
   platform: 'Android 8.0+',
   license: 'GPL-3.0 开源',
-  licenseShort: 'GPL-3.0',
   extra: '无需注册',
   links: {
     apk: 'https://github.com/couldes/wavex/releases',
@@ -18,11 +20,11 @@ export const SITE = {
     license: 'https://github.com/couldes/wavex/blob/main/LICENSE',
   },
   screenshots: {
-    chat: '/screens/chat.png',
-    drawer: '/screens/drawer.png',
-    models: '/screens/models.png',
-    providers: '/screens/providers.png',
-    usage: '/screens/usage.png',
+    chat: `${BASE}/screens/chat.png`,
+    drawer: `${BASE}/screens/drawer.png`,
+    models: `${BASE}/screens/models.png`,
+    providers: `${BASE}/screens/providers.png`,
+    usage: `${BASE}/screens/usage.png`,
   },
   sections: [
     {
@@ -34,7 +36,7 @@ export const SITE = {
         '任意 OpenAI / Anthropic 兼容接口',
         '连接体检,配置对错当场见分晓',
       ],
-      shots: [{ src: '/screens/models.png', alt: '已接入服务商的模型列表' }],
+      shots: [{ src: `${BASE}/screens/models.png`, alt: '已接入服务商的模型列表' }],
     },
     {
       id: 'chat',
@@ -45,21 +47,21 @@ export const SITE = {
         '智能降级链,对话不卡死',
         '自动起标题,历史一搜即达',
       ],
-      shots: [{ src: '/screens/chat.png', alt: '对话界面' }],
+      shots: [{ src: `${BASE}/screens/chat.png`, alt: '对话界面' }],
     },
     {
       id: 'stats',
       title: '用量统计',
       subtitle: '花了多少,花在哪,一目了然',
       bullets: ['请求、成功率、Token 总览', '趋势图表,逐条调用日志'],
-      shots: [{ src: '/screens/usage.png', alt: '用量统计界面' }],
+      shots: [{ src: `${BASE}/screens/usage.png`, alt: '用量统计界面' }],
     },
     {
       id: 'privacy',
       title: '隐私与安全',
       subtitle: '你的密钥和对话,只属于你',
       bullets: ['API Key 只保存在本机', '无账号、不追踪', '自动备份,一键恢复'],
-      shots: [{ src: '/screens/providers.png', alt: 'API Key 加密保存于本机' }],
+      shots: [{ src: `${BASE}/screens/providers.png`, alt: 'API Key 加密保存于本机' }],
     },
   ],
   why: [
