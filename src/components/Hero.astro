@@ -1,0 +1,67 @@
+---
+// 深色首屏:图标 → 标题 → 一句话 → 副行 → CTA → 元信息 → 截图扇形
+// 入场为 CSS 加载动画(data-rise 错峰;手机为 phone-in 升起回正),不依赖 JS
+import PhoneFrame from './PhoneFrame.astro';
+import { SITE } from '../data/site';
+---
+<section class="hero">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <img class="hero-icon" src="/icon.svg" alt="波形应用图标" width="88" height="88" data-rise style="--d:0ms" />
+    <h1 class="hero-title" data-rise style="--d:90ms">
+      {SITE.name} <span class="latin">{SITE.latin}</span>
+    </h1>
+    <p class="hero-tagline" data-rise style="--d:180ms">{SITE.tagline}</p>
+    <p class="hero-subline" data-rise style="--d:260ms">
+      <span class="hero-providers">{SITE.providers}</span>{SITE.subline}
+    </p>
+    <div class="hero-cta" data-rise style="--d:340ms">
+      <a class="btn btn-primary" href={SITE.links.apk}>↓ 下载最新 APK</a>
+      <a class="btn btn-ghost" href={SITE.links.repo}>GitHub</a>
+    </div>
+    <div class="hero-shots">
+      <PhoneFrame src={SITE.screenshots.drawer} alt="历史对话界面" width={200} eager />
+      <PhoneFrame src={SITE.screenshots.chat} alt="聊天界面" width={250} eager />
+      <PhoneFrame src={SITE.screenshots.usage} alt="用量统计界面" width={200} eager />
+    </div>
+  </div>
+</section>
+<script>
+  // 滚动收拢:hero 三台手机随下滑向中间聚拢成叠(纯 transform,尊重 reduced-motion)
+  const shots = document.querySelector('.hero-shots');
+  const phones = shots ? [...shots.querySelectorAll('.phone')] : [];
+  if (phones.length === 3 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      // 白色页面占据视口一半时恰好收完:终点 = hero 底边 - 半个视口
+      const heroEl = document.querySelector('.hero');
+      const end = Math.max(
+        600,
+        (heroEl?.offsetHeight ?? 1000) - window.innerHeight * 0.5
+      );
+      const start = Math.max(120, end - 280); // 滚过约三分之一屏后才开始
+      const t = Math.min(1, Math.max(0, (window.scrollY - start) / (end - start)));
+      const e = 1 - (1 - t) * (1 - t); // easeOut
+      phones[0].style.setProperty('--sx', `${e * 92}px`);
+      phones[0].style.setProperty('--tilt', `${e * -6}deg`);
+      phones[0].style.setProperty('--ss', `${1 - e * 0.05}`);
+      phones[2].style.setProperty('--sx', `${e * -92}px`);
+      phones[2].style.setProperty('--tilt', `${e * 6}deg`);
+      phones[2].style.setProperty('--ss', `${1 - e * 0.05}`);
+      phones[1].style.setProperty('--sy', `${e * -8}px`);
+      phones[1].style.setProperty('--ss', `${1 + e * 0.03}`);
+    };
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      },
+      { passive: true }
+    );
+    update();
+  }
+</script>

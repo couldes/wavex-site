@@ -1,0 +1,18 @@
+---
+// 隐私区图标卡。icon 为 24×24 stroke 路径的 d 字符串。
+interface Props {
+  title: string;
+  desc: string;
+  icon: string;
+}
+const { title, desc, icon } = Astro.props;
+---
+<div class="feature-card">
+  <span class="feature-card-icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d={icon}></path>
+    </svg>
+  </span>
+  <h3>{title}</h3>
+  <p>{desc}</p>
+</div>

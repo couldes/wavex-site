@@ -1,0 +1,64 @@
+---
+// 吸顶胶囊导航:滚动 >24px 加 .scrolled(深色毛玻璃,浅色区可读);
+// IntersectionObserver 高亮当前区块对应的锚点。
+import { SITE } from '../data/site';
+
+// 锚点由 SITE.sections 派生(chat 区不单独出现在导航),末尾固定「下载」入口。
+const SECTION_LABELS: Record<string, string> = {
+  features: '功能',
+  stats: '统计',
+  privacy: '隐私',
+};
+const anchors = [
+  ...SITE.sections
+    .filter((s) => s.id in SECTION_LABELS)
+    .map((s) => ({ href: `#${s.id}`, label: SECTION_LABELS[s.id] })),
+  { href: '#download', label: '下载' },
+];
+---
+<header class="site-nav" id="top">
+  <div class="nav-inner">
+    <nav class="nav-links" aria-label="页面导航">
+      {anchors.map((a) => <a href={a.href}>{a.label}</a>)}
+    </nav>
+  </div>
+</header>
+<script>
+  // 注意:Astro 的 <script> 是独立打包的客户端模块,frontmatter 的 import 不会
+  // 自动注入,必须在此重新导入 SITE(否则运行时抛 "SITE is not defined")。
+  import { SITE } from '../data/site';
+
+  const nav = document.querySelector('.site-nav');
+  const onScroll = () =>
+    nav?.classList.toggle('scrolled', window.scrollY > 24);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // 当前区块高亮
+  const links = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>('.nav-links a')
+  );
+  const byId = new Map(
+    links.map((l) => [(l.getAttribute('href') ?? '').slice(1), l])
+  );
+  const spy = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        const link = byId.get(e.target.id);
+        if (!link) continue;
+        if (e.isIntersecting) {
+          links.forEach((l) => l.classList.remove('active'));
+          link.classList.add('active');
+        } else if (link.classList.contains('active')) {
+          // 区块滑出监测带时清掉残留高亮,避免顶部出现无源高亮
+          link.classList.remove('active');
+        }
+      }
+    },
+    { rootMargin: '-35% 0px -55% 0px' }
+  );
+  [...SITE.sections.map((s) => s.id), 'download'].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) spy.observe(el);
+  });
+</script>

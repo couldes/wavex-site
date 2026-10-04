@@ -1,0 +1,60 @@
+---
+import '../styles/global.css';
+import SiteNav from '../components/SiteNav.astro';
+import Hero from '../components/Hero.astro';
+import FeatureSection from '../components/FeatureSection.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import OpenSource from '../components/OpenSource.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { SITE } from '../data/site';
+
+const [providers, chat, stats, privacy] = SITE.sections;
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={SITE.description} />
+    <meta property="og:title" content="波形 wavex — Android 多 AI 服务商客户端" />
+    <meta property="og:description" content={SITE.description} />
+    <meta property="og:image" content={new URL('/og.png', Astro.site)} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
+    <title>波形 wavex — Android 多 AI 服务商客户端</title>
+  </head>
+  <body>
+    <SiteNav />
+    <main>
+      <Hero />
+      <FeatureSection {...providers} />
+      <FeatureSection {...chat} flip />
+      <FeatureSection {...stats} />
+      <FeatureSection {...privacy} flip />
+      <section class="feature why" id="why">
+        <div class="section-inner">
+          <h2 class="section-title reveal">为什么选波形</h2>
+          <div class="card-grid why-grid reveal" style="--reveal-delay:120ms">
+            {SITE.why.map((c) => <FeatureCard {...c} />)}
+          </div>
+        </div>
+      </section>
+    </main>
+    <OpenSource />
+    <SiteFooter />
+  </body>
+</html>
+<script>
+  // 滚动进入动效:双向触发——进入视口播放,离开视口复位,
+  // 往下划、往回划都会重新切入(不再一次性 unobserve)
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        e.target.classList.toggle('is-visible', e.isIntersecting);
+      }
+    },
+    { threshold: 0.12 }
+  );
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+</script>
