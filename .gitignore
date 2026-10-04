@@ -1,7 +1,21 @@
+# ===== 依赖与构建产物 =====
 node_modules/
 dist/
 .astro/
-.superpowers/
+
+# ===== 系统与本地噪音(含白名单目录内) =====
 .DS_Store
 Thumbs.db
 *.log
+
+# ===== 白名单:仓库只跟踪网站本身,其余一律忽略 =====
+/*
+!/.github/
+!/public/
+!/src/
+!/.gitignore
+!/README.md
+!/astro.config.mjs
+!/package.json
+!/package-lock.json
+!/tsconfig.json
