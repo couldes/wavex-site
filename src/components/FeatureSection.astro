@@ -1,0 +1,42 @@
+---
+// 功能分区:文案与截图左右交错(zigzag)。flip=true 时视觉在左。
+// bullets:精简功能点(渐变对勾,大字号);shots:手机框截图。
+import PhoneFrame from './PhoneFrame.astro';
+interface Props {
+  id: string;
+  title: string;
+  subtitle: string;
+  bullets?: readonly string[];
+  shots?: readonly { readonly src: string; readonly alt: string }[];
+  flip?: boolean;
+}
+const { id, title, subtitle, bullets = [], shots = [], flip = false } = Astro.props;
+const dir = flip ? 44 : -44; // 文字滑入方向:视觉在右则文字从左来
+---
+<section class={`feature${flip ? ' flip' : ''}`} id={id}>
+  <div class="section-inner feature-cols">
+    <div class="feature-copy">
+      <h2 class="section-title reveal" style={`--rx:${dir}px`}>{title}</h2>
+      <p class="section-subtitle reveal" style={`--rx:${dir}px;--reveal-delay:70ms`}>{subtitle}</p>
+      {
+        bullets.length > 0 && (
+          <ul class="feature-bullets">
+            {bullets.map((b, i) => (
+              <li class="reveal" style={`--rx:${dir}px;--reveal-delay:${140 + i * 90}ms`}>
+                <span class="bullet-check" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 6L9 17l-5-5" />
+                  </svg>
+                </span>
+                <strong>{b}</strong>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+    <div class="feature-visual reveal" style={`--rx:${-dir}px;--reveal-delay:110ms`}>
+      {shots.map((s) => <PhoneFrame src={s.src} alt={s.alt} width={252} />)}
+    </div>
+  </div>
+</section>

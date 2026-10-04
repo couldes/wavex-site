@@ -1,0 +1,14 @@
+---
+// 页脚:瘦身为单行版权 + 链接条(品牌与下载 CTA 由上方开源卡承担,不重复)
+import { SITE } from '../data/site';
+---
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-copy">© 2026 wavex</span>
+    <nav class="footer-links" aria-label="页脚链接">
+      <a href={SITE.links.apk}>发布页</a>
+      <a href={SITE.links.repo}>GitHub</a>
+      <a href={SITE.links.issues}>问题反馈</a>
+    </nav>
+  </div>
+</footer>

@@ -1,0 +1,73 @@
+// wavex(波形)产品数据唯一来源。更新产品信息只改这里。
+// 资源路径基于 BASE_URL 派生,兼容任意 GitHub 项目页子路径(如 /arcade/)。
+const BASE = import.meta.env.BASE_URL.replace(/\/+$/, '');
+
+export const SITE = {
+  name: '波形',
+  latin: 'wavex',
+  tagline: '把你的大模型服务,装进一个 Android 应用',
+  subline: '填上你的密钥即可使用;也支持任意 OpenAI / Anthropic 兼容接口',
+  providers: 'OpenAI · Claude · DeepSeek · Kimi · 通义千问 · 智谱 GLM',
+  description: '波形 wavex — Android 多 AI 服务商客户端。支持 OpenAI、Claude、DeepSeek、Kimi 等,密钥本地加密,数据只属于你。',
+  version: 'v0.14.0',
+  platform: 'Android 8.0+',
+  license: 'GPL-3.0 开源',
+  extra: '无需注册',
+  links: {
+    apk: 'https://github.com/couldes/wavex/releases',
+    repo: 'https://github.com/couldes/wavex',
+    issues: 'https://github.com/couldes/wavex/issues',
+    license: 'https://github.com/couldes/wavex/blob/main/LICENSE',
+  },
+  screenshots: {
+    chat: `${BASE}/screens/chat.png`,
+    drawer: `${BASE}/screens/drawer.png`,
+    models: `${BASE}/screens/models.png`,
+    providers: `${BASE}/screens/providers.png`,
+    usage: `${BASE}/screens/usage.png`,
+  },
+  sections: [
+    {
+      id: 'features',
+      title: '服务商随心配',
+      subtitle: 'OpenAI、Claude、DeepSeek 等,填上密钥就能用',
+      bullets: [
+        '支持 6 家主流服务商,填密钥即用',
+        '任意 OpenAI / Anthropic 兼容接口',
+        '连接体检,配置对错当场见分晓',
+      ],
+      shots: [{ src: `${BASE}/screens/models.png`, alt: '已接入服务商的模型列表' }],
+    },
+    {
+      id: 'chat',
+      title: '对话体验',
+      subtitle: '流式回复,该有的都有',
+      bullets: [
+        'Markdown 与数学公式完整渲染',
+        '智能降级链,对话不卡死',
+        '自动起标题,历史一搜即达',
+      ],
+      shots: [{ src: `${BASE}/screens/chat.png`, alt: '对话界面' }],
+    },
+    {
+      id: 'stats',
+      title: '用量统计',
+      subtitle: '花了多少,花在哪,一目了然',
+      bullets: ['请求、成功率、Token 总览', '趋势图表,逐条调用日志'],
+      shots: [{ src: `${BASE}/screens/usage.png`, alt: '用量统计界面' }],
+    },
+    {
+      id: 'privacy',
+      title: '隐私与安全',
+      subtitle: '你的密钥和对话,只属于你',
+      bullets: ['API Key 只保存在本机', '无账号、不追踪', '自动备份,一键恢复'],
+      shots: [{ src: `${BASE}/screens/providers.png`, alt: 'API Key 加密保存于本机' }],
+    },
+  ],
+  why: [
+    { title: '完全免费开源', desc: '源码全部公开,可审计可自证——没有订阅、没有内购', icon: 'M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 7.7l5.4-.8L12 2z' },
+    { title: '数据不出设备', desc: '密钥与对话本地加密,不经过任何第三方服务器', icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z' },
+    { title: '不锁服务商', desc: '六家主流服务商 + 任意兼容接口,随时换', icon: 'M17 1l4 4-4 4M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 0 1-4 4H3' },
+    { title: '装上就用', desc: '无需注册,下载即用', icon: 'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z' },
+  ],
+} as const;
