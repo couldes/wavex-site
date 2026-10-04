@@ -9,10 +9,6 @@ export const SITE = {
   subline: '填上你的密钥即可使用;也支持任意 OpenAI / Anthropic 兼容接口',
   providers: 'OpenAI · Claude · DeepSeek · Kimi · 通义千问 · 智谱 GLM',
   description: '波形 wavex — Android 多 AI 服务商客户端。支持 OpenAI、Claude、DeepSeek、Kimi 等,密钥本地加密,数据只属于你。',
-  version: 'v0.14.0',
-  platform: 'Android 8.0+',
-  license: 'GPL-3.0 开源',
-  extra: '无需注册',
   links: {
     apk: 'https://github.com/couldes/wavex/releases',
     repo: 'https://github.com/couldes/wavex',

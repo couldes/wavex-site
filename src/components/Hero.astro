@@ -21,9 +21,6 @@ const BASE = import.meta.env.BASE_URL.replace(/\/+$/, '');
       <a class="btn btn-primary" href={SITE.links.apk}><span aria-hidden="true">↓</span> 下载最新 APK</a>
       <a class="btn btn-ghost" href={SITE.links.repo}>GitHub</a>
     </div>
-    <div class="hero-meta" data-rise style="--d:420ms">
-      {SITE.version} · {SITE.platform} · {SITE.license} · {SITE.extra}
-    </div>
     <div class="hero-shots">
       <PhoneFrame src={SITE.screenshots.drawer} alt="历史对话界面" width={200} eager />
       <PhoneFrame src={SITE.screenshots.chat} alt="聊天界面" width={250} eager priority />

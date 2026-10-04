@@ -282,12 +282,6 @@ img { max-width: 100%; }
   justify-content: center;
   flex-wrap: wrap;
 }
-.hero-meta {
-  margin-top: 18px;
-  font-size: 0.8rem;
-  color: var(--hero-soft);
-  letter-spacing: 0.05em;
-}
 .hero-shots {
   margin-top: 64px;
   display: flex;
