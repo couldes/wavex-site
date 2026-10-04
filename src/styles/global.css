@@ -169,20 +169,8 @@ img { max-width: 100%; }
   margin: 0 auto;
   height: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
-.nav-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--hero-text);
-  text-decoration: none;
-  font-weight: 800;
-  font-size: 1.05rem;
-  letter-spacing: 0.02em;
-}
-.nav-brand img { border-radius: 7px; }
 .nav-links {
   flex: 1;
   display: flex;
@@ -489,6 +477,15 @@ section[id] { scroll-margin-top: 84px; }
     grid-template-columns: 1fr;
     gap: 40px;
   }
+  /* 单列布局:桌面 zigzag 的左对齐在手机上只剩右侧大片空档,
+     文案与视觉统一居中,与全屏其余区块一致 */
+  .feature-cols { text-align: center; }
+  .feature-visual { display: flex; justify-content: center; }
+  .feature-bullets {
+    width: max-content;
+    max-width: 100%;
+    margin-inline: auto;
+  }
   .feature.flip .feature-copy { order: 0; }
   .feature.flip .feature-visual { order: 1; }
   .why-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -500,6 +497,8 @@ section[id] { scroll-margin-top: 84px; }
   .card-grid,
   .why-grid { grid-template-columns: 1fr; }
   .nav-links a { font-size: 0.92rem; }
+  /* 小屏收紧开源卡内边距,给按钮留足宽度 */
+  .opensource-card { padding: 40px 22px; }
   /* 小屏取消水平位移:入场改为纯上方淡入,避免文字被视口左缘切一半 */
   .reveal { --rx: 0px !important; }
   .feature { padding: 60px 0; }

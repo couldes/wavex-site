@@ -3,8 +3,6 @@
 // (深色毛玻璃,浅色区可读);IntersectionObserver 高亮当前区块对应的锚点。
 import { SITE } from '../data/site';
 
-const BASE = import.meta.env.BASE_URL.replace(/\/+$/, '');
-
 // 锚点由 SITE.sections 派生(chat 区不单独出现在导航),末尾固定「下载」入口。
 const SECTION_LABELS: Record<string, string> = {
   features: '功能',
@@ -18,12 +16,8 @@ const anchors = [
   { href: '#download', label: '下载' },
 ];
 ---
-<header class="site-nav" id="top">
+<header class="site-nav">
   <div class="nav-inner">
-    <a class="nav-brand" href="#top" aria-label="回到顶部">
-      <img src={`${BASE}/icon.svg`} alt="" width="28" height="28" />
-      <span>{SITE.name}</span>
-    </a>
     <nav class="nav-links" aria-label="页面导航">
       {anchors.map((a) => <a href={a.href}>{a.label}</a>)}
     </nav>
